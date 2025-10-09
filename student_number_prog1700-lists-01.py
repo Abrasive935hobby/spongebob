@@ -4,3 +4,5 @@ print("First movie:", movies[0])
 print("Last movie:", movies[-1])
 movies[2] = "Sonic 3"
 print("Updated movies:", movies)
+print()
+
