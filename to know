@@ -1,0 +1,21 @@
+<div> – Generic container for content
+<p> – Paragraph
+<h1> to <h6> – Headings
+<header> – Introductory content or navigational links
+<footer> – Footer for a section or page
+<section> – Thematic grouping of content
+<article> – Self-contained content (e.g., blog post)
+<nav> – Navigation links
+<aside> – Sidebar or tangential content
+<main> – Main content of the document
+<address> – Contact information
+<blockquote> – Quoted content
+<pre> – Preformatted text
+<hr> – Horizontal rule (divider)
+<ul>, <ol>, <li> – Lists
+<form> – HTML form
+<table> – Table structure
+<fieldset> – Grouping form elements
+<legend> – Caption for <fieldset>
+<figure> – Media content with caption
+<figcaption> – Caption for <figure>
