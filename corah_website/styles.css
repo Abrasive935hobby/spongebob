@@ -1,7 +1,12 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #fafafa;
-  color: #333;
-  text-align: center;
-  margin-top: 50px;
+.header-container {
+    display: flex;
+    align-items: center;
+}
+ 
+.logo-container {
+    display: inline-block;
+}
+ 
+.nav-container {
+    display: inline-block;
 }
