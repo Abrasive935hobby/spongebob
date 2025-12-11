@@ -1,23 +1,42 @@
 import os
+import sys
 
 
 def load_passwords(filename="passwords.txt"):
-    """Load valid passwords from a file (relative to this script) and return as a list."""
+    """Load valid passwords from a file and return as a list.
+
+    Behavior:
+    - If `filename` is an absolute path, open it directly.
+    - Otherwise try to open relative to this script's directory (when `__file__` is present).
+    - If that fails, fall back to the current working directory.
+    Returns an empty list on failure.
+    """
+    # If an absolute path was provided, prefer it.
     try:
-        base_dir = os.path.dirname(__file__)
-        filepath = os.path.join(base_dir, filename)
+        if os.path.isabs(filename):
+            filepath = filename
+        else:
+            # Prefer the script's directory when available; otherwise use cwd
+            base_dir = os.path.dirname(__file__) if '__file__' in globals() else os.getcwd()
+            filepath = os.path.join(base_dir, filename)
+
         with open(filepath, "r") as f:
             return [line.strip() for line in f.readlines()]
     except FileNotFoundError:
-        print(f"ERROR: {filename} not found at {filepath}!")
-        return []
+        # Try fallback: open filename directly from current working directory
+        try:
+            filepath = os.path.join(os.getcwd(), filename)
+            with open(filepath, "r") as f:
+                return [line.strip() for line in f.readlines()]
+        except FileNotFoundError:
+            print(f"ERROR: {filename} not found at {filepath}!")
+            return []
 
 
 def get_numeric_input():
     """Request a 5-digit numeric code per flowchart rules."""
     user_input = input("Enter your 5-digit password: ")
 
-    # Flowchart block: Convert ASCII → Validate number
     if not user_input.isdigit():
         print("Invalid Input! Numbers only.")
         return None
@@ -35,23 +54,19 @@ def password_loop(valid_passwords, alarm_status):
     Returns updated alarm_status.
     """
 
-    password_attempts = 5   # Flowchart: Set password_attempts to 5
+    password_attempts = 5  
 
     while True:
 
-        user_input = get_numeric_input()  # Display → Enter your 5-digit password
+        user_input = get_numeric_input()  
 
-        # If invalid format, go back to the loop without losing an attempt
         if user_input is None:
             continue
 
-        # Flowchart: Create password list (even if already loaded)
         passwords_list = valid_passwords
 
-        # Flowchart: Check Password decision
         if user_input in passwords_list:
 
-            # Flowchart: Password Match branch
             if alarm_status == "off":
                 alarm_status = "on"
             else:
@@ -62,15 +77,13 @@ def password_loop(valid_passwords, alarm_status):
             return alarm_status
 
         else:
-            # Flowchart: Incorrect Password branch
             password_attempts -= 1
             print("Invalid Password!")
             print("Attempts Remaining:", password_attempts)
 
-            # Flowchart: Password attempts decision
             if password_attempts == 0:
                 print("No attempts left → Alarm TRIPPED!")
-                return alarm_status  # Final exit
+                return alarm_status 
 
 
 def main():
@@ -80,18 +93,15 @@ def main():
 
     print("SYSTEM READY")
 
-    # Phase 1 → Turn alarm ON
     print("\n--- ACTIVATE ALARM ---")
     alarm_status = password_loop(valid_passwords, alarm_status)
 
     if alarm_status != "on":
-        # Flowchart: If failed activation (or tripped) → End
         print("\nAlarm Did Not Activate. System Locked.")
         return
 
     print("\nAlarm Activated Successfully.")
 
-    # Phase 2 → Turn alarm OFF
     print("\n--- DEACTIVATE ALARM ---")
     alarm_status = password_loop(valid_passwords, alarm_status)
 
